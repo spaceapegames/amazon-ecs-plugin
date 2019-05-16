@@ -40,6 +40,7 @@ public class ECSTaskTemplateStep extends Step implements Serializable {
     private final String label;
     private final String name;
     private String cloud = DEFAULT_CLOUD;
+    private String containerNameOverride;
     private String taskDefinitionOverride;
     private String repositoryCredentials;
     private String image;
@@ -88,6 +89,11 @@ public class ECSTaskTemplateStep extends Step implements Serializable {
     public String getCloud() {
         return cloud;
     }
+
+    @DataBoundSetter
+    public void setContainerNameOverride(String containerNameOverride) { this.containerNameOverride = containerNameOverride; }
+
+    public String getContainerNameOverride() { return containerNameOverride; }
 
     @DataBoundSetter
     public void setTaskDefinitionOverride(String taskDefinitionOverride) {
@@ -401,6 +407,7 @@ public class ECSTaskTemplateStep extends Step implements Serializable {
                 "ecs{" + '\n' +
                 "cloud='" + cloud + '\'' + '\n' +
                 "image='" + image + '\'' + '\n' +
+                "containerNameOverride='" + containerNameOverride + '\'' + '\n' +
                 "taskDefinitionOverride='" + taskDefinitionOverride + '\'' + '\n' +
                 "launchType='" + launchType + '\'' + '\n' +
                 "networkMode='" + networkMode + '\'' + '\n' +

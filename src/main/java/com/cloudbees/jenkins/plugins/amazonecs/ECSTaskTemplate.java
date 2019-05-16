@@ -71,6 +71,11 @@ public class ECSTaskTemplate extends AbstractDescribableImpl<ECSTaskTemplate> im
     private final String label;
 
     /**
+     * Container name override
+     */
+    private String containerNameOverride;
+
+    /**
      * Task Definition Override to use, instead of a Jenkins-managed Task definition. May be a family name or an ARN.
      */
     @CheckForNull
@@ -251,6 +256,7 @@ public class ECSTaskTemplate extends AbstractDescribableImpl<ECSTaskTemplate> im
     @DataBoundConstructor
     public ECSTaskTemplate(@Nonnull String templateName,
                            @Nullable String label,
+                           String containerNameOverride,
                            @Nullable String taskDefinitionOverride,
                            @Nonnull String image,
                            @Nullable final String repositoryCredentials,
@@ -289,6 +295,7 @@ public class ECSTaskTemplate extends AbstractDescribableImpl<ECSTaskTemplate> im
 
         this.label = label;
         this.image = image;
+        this.containerNameOverride = StringUtils.trimToNull(containerNameOverride);
         this.repositoryCredentials = StringUtils.trimToNull(repositoryCredentials);
         this.remoteFSRoot = remoteFSRoot;
         this.memory = memory;
@@ -314,6 +321,9 @@ public class ECSTaskTemplate extends AbstractDescribableImpl<ECSTaskTemplate> im
     public void setTaskrole(String taskRoleArn) {
         this.taskrole = StringUtils.trimToNull(taskRoleArn);
     }
+
+    @DataBoundSetter
+    public void setContainerNameOverride(String containerNameOverride) { this.containerNameOverride = StringUtils.trimToNull(containerNameOverride); }
 
     @DataBoundSetter
     public void setExecutionRole(String executionRole) {
@@ -368,6 +378,8 @@ public class ECSTaskTemplate extends AbstractDescribableImpl<ECSTaskTemplate> im
     public String getLabel() {
         return label;
     }
+
+    public String getContainerNameOverride() { return containerNameOverride; }
 
     public String getTaskDefinitionOverride() {
         return taskDefinitionOverride;
@@ -548,6 +560,7 @@ public class ECSTaskTemplate extends AbstractDescribableImpl<ECSTaskTemplate> im
 
         ECSTaskTemplate merged = new ECSTaskTemplate(templateName,
                                                        label,
+                                                       containerNameOverride,
                                                        taskDefinitionOverride,
                                                        image,
                                                        repositoryCredentials,

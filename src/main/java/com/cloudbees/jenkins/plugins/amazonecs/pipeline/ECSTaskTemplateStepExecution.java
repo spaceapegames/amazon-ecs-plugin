@@ -12,6 +12,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javax.annotation.Nonnull;
 import com.cloudbees.jenkins.plugins.amazonecs.ECSCloud;
 import com.cloudbees.jenkins.plugins.amazonecs.ECSTaskTemplate;
+
+import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang.RandomStringUtils;
@@ -21,7 +24,7 @@ public class ECSTaskTemplateStepExecution extends AbstractStepExecutionImpl {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(ECSTaskTemplateStepExecution.class.getName());
 
-    private static final transient String NAME_FORMAT = "%s-%s";
+    private static final transient String NAME_FORMAT = "%s-%s-%s";
 
     @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "not needed on deserialization")
     private final transient ECSTaskTemplateStep step;
@@ -41,6 +44,15 @@ public class ECSTaskTemplateStepExecution extends AbstractStepExecutionImpl {
         LOGGER.log(Level.FINE, "cloud: {0}", this.cloudName);
         LOGGER.log(Level.FINE, "label: {0}", step.getLabel());
         String randString = RandomStringUtils.random(5, "bcdfghjklmnpqrstvwxz0123456789");
+
+        String override = "";
+        if (step.getContainerNameOverride() != null) {
+            String[] overrides = step.getContainerNameOverride().split("/");
+            Random r = new Random();
+            int randomNumber = r.nextInt(overrides.length);
+            override = overrides[randomNumber];
+        }
+
         String name = String.format(NAME_FORMAT, step.getName(), randString);
 
         Cloud cloud = null;
@@ -75,6 +87,7 @@ public class ECSTaskTemplateStepExecution extends AbstractStepExecutionImpl {
 
         newTemplate = new ECSTaskTemplate(name,
                                           step.getLabel(),
+                                          step.getContainerNameOverride(),
                                           step.getTaskDefinitionOverride(),
                                           step.getImage(),
                                           step.getRepositoryCredentials(),
