@@ -24,7 +24,7 @@ public class ECSTaskTemplateStepExecution extends AbstractStepExecutionImpl {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(ECSTaskTemplateStepExecution.class.getName());
 
-    private static final transient String NAME_FORMAT = "%s-%s-%s";
+    private static final transient String NAME_FORMAT = "%s-%s%s";
 
     @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "not needed on deserialization")
     private final transient ECSTaskTemplateStep step;
@@ -50,10 +50,10 @@ public class ECSTaskTemplateStepExecution extends AbstractStepExecutionImpl {
             String[] overrides = step.getContainerNameOverride().split("/");
             Random r = new Random();
             int randomNumber = r.nextInt(overrides.length);
-            override = overrides[randomNumber];
+            override = overrides[randomNumber] + "-";
         }
 
-        String name = String.format(NAME_FORMAT, step.getName(), randString);
+        String name = String.format(NAME_FORMAT, step.getName(), override, randString);
 
         Cloud cloud = null;
         String parentLabel = step.getInheritFrom();

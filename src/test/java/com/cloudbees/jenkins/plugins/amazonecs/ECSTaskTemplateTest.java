@@ -10,19 +10,19 @@ public class ECSTaskTemplateTest {
     public void shouldMerge() throws Exception {
 
         ECSTaskTemplate child = new ECSTaskTemplate(
-            "child-name", "child-label",
+            "child-name", "child-label", null,
             null, "child-image", "child-repository-credentials", "EC2", "child-network-mode", "child-remoteFSRoot",
             0, 0, 0, null, null, false, false,
             "child-containerUser", null, null, null, null, null, null, "parent");
 
         ECSTaskTemplate parent = new ECSTaskTemplate(
-            "parent-name", "parent-label",
+            "parent-name", "parent-label", null,
             null, "parent-image", "parent-repository-credentials", "FARGATE", "parent-network-mode", "parent-remoteFSRoot",
             0, 0, 0, null, null, false, false,
             "parent-containerUser", null, null, null, null, null, null, null);
 
         ECSTaskTemplate expected = new ECSTaskTemplate(
-            "child-name", "child-label",
+            "child-name", "child-label", null,
             null, "child-image", "child-repository-credentials", "EC2", "child-network-mode", "child-remoteFSRoot",
             0, 0, 0, null, null, false, false,
             "child-containerUser", null, null, null, null, null, null, null);
@@ -37,19 +37,19 @@ public class ECSTaskTemplateTest {
     public void shouldReturnSettingsFromParent() throws Exception {
 
         ECSTaskTemplate child = new ECSTaskTemplate(
-            "child-name", "child-label",
+            "child-name", "child-label", null,
             null, null, "child-repository-credentials", "EC2", "child-network-mode",  "child-remoteFSRoot", // image is set to null
             0, 0, 0, null, null, false, false,
             "child-containerUser", null, null, null, null, null, null, "parent");
 
         ECSTaskTemplate parent = new ECSTaskTemplate(
-            "parent-name", "parent-label",
+            "parent-name", "parent-label", null,
             null, "parent-image", "parent-repository-credentials", "FARGATE", "parent-network-mode", "parent-remoteFSRoot",
             0, 0, 0, null, null, false, false,
             "parent-containerUser", null, null, null, null, null, null, null);
 
         ECSTaskTemplate expected = new ECSTaskTemplate(
-            "child-name", "child-label",
+            "child-name", "child-label", null,
             null, "parent-image", "child-repository-credentials", "EC2", "child-network-mode", "child-remoteFSRoot",
             0, 0, 0, null, null, false, false,
             "child-containerUser", null, null, null, null, null, null, null);
@@ -63,13 +63,13 @@ public class ECSTaskTemplateTest {
     public void shouldReturnChildIfNoParent() throws Exception {
 
         ECSTaskTemplate child = new ECSTaskTemplate(
-            "child-name", "child-label",
+            "child-name", "child-label", null,
             null, "child-image", "child-repository-credentials", "EC2", "child-network-mode", "child-remoteFSRoot",
             0, 0, 0, null, null, false, false,
             "child-containerUser", null, null, null, null, null, null, null); // inheritFrom is null
 
         ECSTaskTemplate expected = new ECSTaskTemplate(
-            "child-name", "child-label",
+            "child-name", "child-label", null,
             null, "child-image", "child-repository-credentials", "EC2", "child-network-mode", "child-remoteFSRoot",
             0, 0, 0, null, null, false, false,
             "child-containerUser", null, null, null, null, null, null, null);
